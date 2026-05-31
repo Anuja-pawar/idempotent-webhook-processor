@@ -1,6 +1,9 @@
 package domain
 
-import "context"
+import (
+	"context"
+	"errors"
+)
 
 // WebhookPayload represents the structure of the incoming data we want to process.
 type WebhookPayload struct {
@@ -24,3 +27,8 @@ type IdempotencyRepository interface {
 type WebhookUseCase interface {
 	ProcessWebhook(ctx context.Context, payload *WebhookPayload) error
 }
+
+var (
+	ErrDuplicateRequest = errors.New("conflict: duplicate transaction detected")
+	ErrQueueFull        = errors.New("service unavailable: internal ingestion queue full")
+)
